@@ -1,5 +1,6 @@
 using API.Data;
 using API.Models;
+using API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,8 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddSignInManager<SignInManager<User>>() // make use of SignIn Manager
     .AddUserManager<UserManager<User>>() // make use of User Manager to create users
     .AddDefaultTokenProviders(); // to be able to crate tokens for email confirmation
+
+builder.Services.AddScoped<JWTService>();
 
 var app = builder.Build();
 
