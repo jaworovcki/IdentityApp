@@ -1,9 +1,11 @@
 ﻿using API.DTOs;
 using API.Models;
 using API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -23,6 +25,14 @@ namespace API.Controllers
             _jWTService = jWTService;
             _signInManager = signInManager;
             _userManager = userManager;
+        }
+
+        [Authorize]
+        [HttpGet("refresh-token")]
+        public async Task<ActionResult<UserDto>> RefreshToken()
+        {
+            var user = await _userManager.FindByNameAsync(User.FindFirst(ClaimTypes.Email)?.Value);
+            return Ok(CreateApplicationUserDto(user));
         }
 
         [HttpPost("login")]

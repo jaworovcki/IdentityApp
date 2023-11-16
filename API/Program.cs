@@ -48,7 +48,7 @@ builder.Services.AddScoped<JWTService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters()
+        options.TokenValidationParameters = new TokenValidationParameters
         {
             //validate the token based on the key provided in the appsetting.json
             ValidateIssuerSigningKey = true,
