@@ -1,12 +1,15 @@
 using API.Data;
 using API.Models;
 using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +44,24 @@ builder.Services.AddIdentityCore<User>(options =>
 
 builder.Services.AddScoped<JWTService>();
 
+// to be able to authenticate users using JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            //validate the token based on the key provided in the appsetting.json
+            ValidateIssuerSigningKey = true,
+            //the issuer signing key based on the JWT:TokenKey in appsetting.json
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:TokenKey"])),
+            //the issuer is the api project
+            ValidIssuer = builder.Configuration["JWT:Issuer"],
+            //validate the issuer(who is validate the JWT)
+            ValidateIssuer = true,
+            ValidateAudience = false,
+        };
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -52,6 +73,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+//Authentication verifies the identity of the user
+app.UseAuthentication();
+//Authorization verifies the user has access to the resource
 app.UseAuthorization();
 
 app.MapControllers();
