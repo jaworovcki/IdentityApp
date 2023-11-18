@@ -24,7 +24,7 @@ export class RegisterComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')]],
-      password : ['', [Validators.required, Validators.maxLength(50), Validators.minLength(2)]],
+      password : ['', [Validators.required, Validators.maxLength(50), Validators.minLength(5)]],
     });
   }
 
@@ -32,13 +32,15 @@ export class RegisterComponent implements OnInit {
     this.submitted = true;
     this.errorMessages = [];
 
-    this.accountService.register(this.registerForm.value).subscribe({
-      next: (response) => {
-        console.log(response);
-      },
-      error: (errorResponse) => {
-        console.log(errorResponse);
-      }
-    })
+    //if (this.registerForm.valid) {
+      this.accountService.register(this.registerForm.value).subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+        error: (errorResponse) => {
+          console.log(errorResponse);
+        }
+      });
+   // }
   }
 }
