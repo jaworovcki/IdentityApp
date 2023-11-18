@@ -1,1 +1,39 @@
-<p>register works!</p>
+<div class="d-flex justify-content-center">
+  <div class="col-12 col-lg-5">
+    <main class="form-signin">
+      <form [formGroup]="registerForm" (ngSubmit)="register()" autocomplete="off">
+        <div class="text-center mb-4">
+          <h3 class="mb-3 form-weight-normal">
+            Let's get started to
+            <span class="text-danger">Play</span>  
+          </h3>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input formControlName="firstName" type="text" placeholder="First name" class="form-control"/>
+          <label for="firstName">First name</label>
+        </div>
+        <div class="form-floating mb-3">
+          <input formControlName="lastName" type="text" placeholder="Last name" class="form-control"/>
+          <label for="lastName">Last name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input formControlName="email" type="email" placeholder="Email" class="form-control"/>
+          <label for="email">Email</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input formControlName="password" type="password" placeholder="Password" class="form-control"/>
+          <label for="password">Password</label>
+        </div>
+
+        <div class="d-grid mt-4 px-1">
+          <button class="btn btn-lg btn-info" type="submit">
+            Create account
+          </button>
+        </div>
+      </form>
+    </main>
+  </div>
+</div>
